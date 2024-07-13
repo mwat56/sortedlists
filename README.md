@@ -1,4 +1,4 @@
-# sortedlists
+# SortedLists
 
 [![golang](https://img.shields.io/badge/Language-Go-green.svg)](https://golang.org/)
 [![GoDoc](https://godoc.org/github.com/mwat56/sortedlists?status.svg)](https://godoc.org/github.com/mwat56/sortedlists)
@@ -8,6 +8,13 @@
 [![Tag](https://img.shields.io/github/tag/mwat56/sortedlists.svg)](https://github.com/mwat56/sortedlists/tags)
 [![View examples](https://img.shields.io/badge/learn%20by-examples-0077b3.svg)](https://github.com/mwat56/sortedlists/blob/main/_demo/demo.go)
 [![License](https://img.shields.io/github/mwat56/sortedlists.svg)](https://github.com/mwat56/sortedlists/blob/main/LICENSE)
+
+- [SortedLists](#sortedlists)
+	- [Purpose](#purpose)
+	- [Installation](#installation)
+	- [Usage](#usage)
+	- [Libraries](#libraries)
+	- [Licence](#licence)
 
 ----
 
@@ -29,7 +36,7 @@ You can use `Go` to install this package for you:
 
 The following external libraries were used building `sortedlists`:
 
-* [ApacheLogger](https://github.com/mwat56/apachelogger)
+* [None]
 
 ## Licence
 
