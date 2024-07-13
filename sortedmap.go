@@ -42,7 +42,7 @@ type TSortedMap[K cmp.Ordered, V comparable] struct {
 // --------------------------------------------------------------------------
 // constructor function
 
-// `NewSortedMap()` creates a new instance of `TSortedMap` with the
+// `NewMap()` creates a new instance of `TSortedMap` with the
 // specified key and value types.
 //
 // The returned map is initially empty.
@@ -56,19 +56,19 @@ type TSortedMap[K cmp.Ordered, V comparable] struct {
 // Returns:
 // - `*TSortedMap[K, V]`: A pointer to a new instance with the given
 // key and value types.
-func NewSortedMap[K cmp.Ordered, V comparable](aSafe bool) *TSortedMap[K, V] {
+func NewMap[K cmp.Ordered, V comparable](aSafe bool) *TSortedMap[K, V] {
 	return &TSortedMap[K, V]{
 		data: make(map[K]V),
 		keys: make([]K, 0),
 		safe: aSafe,
 	}
-} // NewSortedMap()
+} // NewMap()
 
 // --------------------------------------------------------------------------
 // methods of TSortedMap
 
 // `Clear()` empties the internal data structures:
-// all map entrie are deleted.
+// all map entries are removed.
 //
 // Returns:
 // - `*TSortedMap`: The cleared hash map.

@@ -16,8 +16,8 @@ import (
 
 func main() {
 	// Example usage
-	ints := sl.NewSortedSlice([]int{5, 3, 4, 1, 2}, false)
-	
+	ints := sl.NewSlice([]int{5, 3, 4, 1, 2}, false)
+
 	ints.Insert(6)
 	fmt.Println(ints.Data()) // Output: [1 2 3 4 5 6]
 

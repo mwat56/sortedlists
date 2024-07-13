@@ -39,7 +39,7 @@ type (
 // --------------------------------------------------------------------------
 // constructor function
 
-// `NewSortedSlice()` creates a new `TSortedSlice`.
+// `NewSlice()` creates a new `TSortedSlice`.
 //
 // If the given `aList` is empty the initial capacity of the underlying
 // list is set to 32 to optimise memory usage.
@@ -51,7 +51,7 @@ type (
 //
 // Returns:
 // - `*TSortedSlice[T]`: A pointer to the newly created instance.
-func NewSortedSlice[T cmp.Ordered](aList []T, aSafe bool) *TSortedSlice[T] {
+func NewSlice[T cmp.Ordered](aList []T, aSafe bool) *TSortedSlice[T] {
 	var list []T
 
 	if 0 < len(aList) {
@@ -67,7 +67,7 @@ func NewSortedSlice[T cmp.Ordered](aList []T, aSafe bool) *TSortedSlice[T] {
 	slices.Sort(ss.data)
 
 	return ss
-} // NewSortedSlice()
+} // NewSlice()
 
 // -------------------------------------------------------------------------
 // methods of TSortedSlice
@@ -82,9 +82,7 @@ func (ss *TSortedSlice[T]) Clear() *TSortedSlice[T] {
 		defer ss.mtx.Unlock()
 	}
 
-	if nil != ss {
-		ss.data = make([]T, 0, 32)
-	}
+	ss.data = make([]T, 0, 32)
 
 	return ss
 } // Clear()
