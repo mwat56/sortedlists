@@ -118,7 +118,40 @@ func (sm *TSortedMap[K, V]) Delete(aKey K) bool {
 	return sm.delete(aKey)
 } // Delete()
 
-// - `[]K`: The index of `aID` in the list.
+func (sm *TSortedMap[K, V]) equals(aMap *TSortedMap[K, V]) bool {
+	// Check if the maps have the same number of elements
+	if len(sm.data) != len(aMap.data) {
+		return false
+	}
+
+	// Check if the keys are in the same order
+	if !slices.Equal(sm.keys, aMap.keys) {
+		return false
+	}
+
+	// Check if the values are equal for each key
+	for key, val1 := range sm.data {
+		if val2, ok := aMap.data[key]; !ok || val1 != val2 {
+			return false
+		}
+	}
+
+	return true
+} // equals()
+
+func (sm *TSortedMap[K, V]) Equals(aMap *TSortedMap[K, V]) bool {
+	if sm.safe {
+		sm.mtx.RLock()
+		defer sm.mtx.RUnlock()
+	}
+	if aMap.safe {
+		aMap.mtx.RLock()
+		defer aMap.mtx.RUnlock()
+	}
+
+	return sm.equals(aMap)
+} // Equals()
+
 func (sm *TSortedMap[K, V]) findIndex(aValue V) []K {
 	var result []K
 
@@ -239,23 +272,36 @@ func (sm *TSortedMap[K, V]) Insert(aKey K, aValue V) bool {
 	return sm.insert(aKey, aValue)
 } // Insert()
 
+// `IsSafe()` returns whether the current map is thread-safe.
+//
+// A `TSortedMap` instance is thread-safe if it was created with the `aSafe`
+// flag set to `true` when calling the constructor function `NewMap()`.
+// In a thread-safe instance, all methods can be called concurrently
+// without causing data corruption or race conditions.
+//
+// Returns:
+//   - bool: A boolean value indicating whether the current map is thread-safe.
+func (sm *TSortedMap[K, V]) IsSafe() bool {
+	return sm.safe
+} // IsSafe()
+
 // `Iterate()` allows iteration over the map in sorted key order.
 //
 // Parameters:
-// - `f`: A function that takes a key and its associated value as
-// arguments and performs some operation on them.
+//   - `aFunc`: A function that takes a key and its associated value as arguments and performs some operation on them.
 //
 // Returns:
-// - `*TSortedMap[K, V]`: A pointer to the same SortedMap instance,
+//   - `*TSortedMap[K, V]`: A pointer to the same SortedMap instance,
+//
 // allowing method chaining.
-func (sm *TSortedMap[K, V]) Iterate(f func(K, V)) *TSortedMap[K, V] {
+func (sm *TSortedMap[K, V]) Iterate(aFunc func(K, V)) *TSortedMap[K, V] {
 	if sm.safe {
 		sm.mtx.RLock()
 		defer sm.mtx.RUnlock()
 	}
 
 	for _, key := range sm.keys {
-		f(key, sm.data[key])
+		aFunc(key, sm.data[key])
 	}
 
 	return sm
