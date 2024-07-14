@@ -147,6 +147,30 @@ func (ss *TSortedSlice[T]) Data() []T {
 	return append([]T{}, ss.data...)
 } // Data()
 
+// `Equals()` checks if the current sorted slice is equal to another
+// sorted slice.
+//
+// The method compares the elements of the current sorted slice with
+// the elements of the given sorted slice. It returns `true` if both
+// slices contain the same elements in the same order, or `false` otherwise.
+//
+// If the current sorted slice is safe (i.e., thread-safe), the method
+// acquires a read lock before performing the comparison.
+//
+// Parameters:
+//   - `aList`: The sorted slice to compare with the current slice.
+//
+// Returns:
+//   - `bool`: An indicator for whether the current slice is equal to `aList`.
+func (ss *TSortedSlice[T]) Equals(aList *TSortedSlice[T]) bool {
+	if ss.safe {
+		ss.mtx.RLock()
+		defer ss.mtx.RUnlock()
+	}
+
+	return slices.Equal(ss.data, aList.data)
+} // Equals()
+
 func (ss *TSortedSlice[T]) findIndex(aElement T) int {
 	sLen := len(ss.data)
 	if 0 == sLen {
