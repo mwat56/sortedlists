@@ -150,12 +150,12 @@ func (ss *TSortedSlice[T]) Data() []T {
 // `Equals()` checks if the current sorted slice is equal to another
 // sorted slice.
 //
-// The method compares the elements of the current sorted slice with
-// the elements of the given sorted slice. It returns `true` if both
-// slices contain the same elements in the same order, or `false` otherwise.
+// The method compares the elements of the current sorted slice with the
+// elements of the given sorted slice. It returns `true` if both slices
+// contain the same elements in the same order, or `false` otherwise.
 //
-// If the current sorted slice is safe (i.e., thread-safe), the method
-// acquires a read lock before performing the comparison.
+// If the slices are thread-safe, the method acquires the respective
+// read locks before performing the comparison.
 //
 // Parameters:
 //   - `aList`: The sorted slice to compare with the current slice.
@@ -166,6 +166,10 @@ func (ss *TSortedSlice[T]) Equals(aList *TSortedSlice[T]) bool {
 	if ss.safe {
 		ss.mtx.RLock()
 		defer ss.mtx.RUnlock()
+	}
+	if aList.safe {
+		aList.mtx.RLock()
+		defer aList.mtx.RUnlock()
 	}
 
 	return slices.Equal(ss.data, aList.data)
@@ -276,6 +280,19 @@ func (ss *TSortedSlice[T]) Insert(aElement T) bool {
 
 	return ss.insert(aElement)
 } // Insert()
+
+// `IsSafe()` returns whether the current slice is thread-safe.
+//
+// A `TSortedSlice` instance is thread-safe if it was created with the `aSafe`
+// flag set to `true` when calling the constructor function `NewSlice()`.
+// In a thread-safe instance, all methods can be called concurrently
+// without causing data corruption or race conditions.
+//
+// Returns:
+//   - bool: An indicator for whether the current slice is thread-safe.
+func (ss *TSortedSlice[T]) IsSafe() bool {
+	return ss.safe
+} // IsSafe()
 
 func (ss *TSortedSlice[T]) rename(aOldValue, aNewValue T) bool {
 	if (0 == len(ss.data)) || (aOldValue == aNewValue) {
