@@ -1,5 +1,5 @@
 /*
-Copyright © 2023, 2024  M.Watermann, 10247 Berlin, Germany
+Copyright © 2023, 2025  M.Watermann, 10247 Berlin, Germany
 
 		All rights reserved
 	EMail : <support@mwat.de>
@@ -50,8 +50,8 @@ type TSortedMap[K cmp.Ordered, V comparable] struct {
 // Parameters:
 //   - `K`: The type of the keys in the sorted map.
 //   - `V`: The type of the values in the sorted map.
-//   - `aSafe`: Flag to decide whether the returned map should be
-//     thread safe, i.e. use a `sync.RWMutex` in all methods.
+//   - `aSafe`: Flag to decide whether the returned map should
+//     be thread safe, i.e. use a `sync.RWMutex` in all methods.
 //
 // Returns:
 // - `*TSortedMap[K, V]`: A pointer to a new instance with the given
@@ -253,7 +253,7 @@ func (sm *TSortedMap[K, V]) insert(aKey K, aValue V) bool {
 	sm.data[aKey] = aValue
 
 	return true
-} // Insert()
+} // insert()
 
 // `Insert()` adds or updates a key/value pair in the sorted map.
 //
@@ -355,7 +355,7 @@ func (sm *TSortedMap[K, V]) rename(aOldKey, aNewKey K) bool {
 	slices.Sort(sm.keys) // ascending
 
 	return true
-} // Rename()
+} // rename()
 
 // `Rename()` changes the key of an existing entry without affecting its value.
 //
